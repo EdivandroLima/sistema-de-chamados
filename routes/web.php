@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Livewire\Tickets\Show as TicketShow;
+use App\Livewire\Tickets\Create as TicketCreate;
+use App\Livewire\Customers\All as CustomersAll;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +26,14 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {
-        return view('dashboard');
+        return view('pages.dashboard');
     })->name('dashboard');
+
+
+    // Tickets
+    Route::get('/create', TicketCreate::class)->name('tickets.create');
+    Route::get('/show/{ticket}', TicketShow::class)->name('tickets.show');
+
+    // Clientes
+    Route::get('/customers', CustomersAll::class)->name('customers.index');
 });
