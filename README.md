@@ -5,6 +5,9 @@
 ```
 https://jetstream.laravel.com/installation.html
 ```
+```
+php artisan livewire:publish --assets
+```
 
 ### Laravel PT-BR
 ```
