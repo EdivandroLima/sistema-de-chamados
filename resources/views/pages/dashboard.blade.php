@@ -6,7 +6,7 @@
                     <h2 class="text-2xl">Suas solicitações de suporte</h2>
                 </div>
                 <div class="">
-                    <a href="" class="font-bold flex gap-1  text-indigo-500 text-sm uppercase">
+                    <a href="{{ route('tickets.create') }}" class="font-bold flex gap-1  text-indigo-500 text-sm uppercase">
                         <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                             stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
@@ -50,7 +50,7 @@
                             </div>
                             <input type="search" id="search-dropdown"
                                 class="block ps-10 py-5 px-5 w-full z-20 text-sm text-gray-900  border-0  focus:ring-0 focus:border-indigo-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
-                                placeholder="Pesquisar por tópico ou ID" required />
+                                placeholder="Pesquisar por assunto ou ID" required />
                             <div class="absolute top-0 end-0 flex h-full py-2.5 pe-3">
                                 <button type="submit"
                                     class=" px-5 text-sm uppercase  text-white bg-indigo-500 rounded border border-indigo-500 hover:bg-indigo-600 focus:ring-4 focus:outline-none focus:ring-indigo-300 dark:bg-indigo-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -74,7 +74,7 @@
                                 <thead class="text-gray-500 border-b">
                                     <tr>
                                         <th class="py-2 px-4">TICKET #</th>
-                                        <th class="py-2 px-4">TÓPICO</th>
+                                        <th class="py-2 px-4">ASSUNTO</th>
                                         <th class="py-2 px-4">STATUS DA SOLICITAÇÃO</th>
                                         <th class="py-2 px-4">ÚLTIMA ATUALIZAÇÃO</th>
                                         <th class="py-2 px-4"></th>
@@ -92,8 +92,10 @@
                                             <td class="py-3 px-4">02-23-2017</td>
                                             <td class="py-3 px-4 text-right">
                                                 <div class="flex items-center gap-2 justify-end">
-                                                    <button
-                                                        class="bg-indigo-100 text-indigo-600 px-4 py-3 font-semibold rounded hover:bg-indigo-200 uppercase text-xs">Visualizar</button>
+                                                    <a href="{{ route('tickets.show', 1) }}"
+                                                        class="bg-indigo-100 text-indigo-600 px-4 py-3 font-semibold rounded hover:bg-indigo-200 uppercase text-xs">
+                                                        Visualizar
+                                                    </a>
                                                 </div>
                                             </td>
                                         </tr>

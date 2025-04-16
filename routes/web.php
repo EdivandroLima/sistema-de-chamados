@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Livewire\Tickets\Show as TicketShow;
+use App\Livewire\Tickets\Create as TicketCreate;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,4 +27,9 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('pages.dashboard');
     })->name('dashboard');
+
+
+    // Tickets
+    Route::get('/create', TicketCreate::class)->name('tickets.create');
+    Route::get('/show/{ticket}', TicketShow::class)->name('tickets.show');
 });
