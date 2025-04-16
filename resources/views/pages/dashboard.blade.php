@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 text-gray-600">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-gray-600">
             <div class="flex items-center justify-between gap-3">
                 <div class="">
                     <h2 class="text-2xl">Suas solicitações de suporte</h2>
