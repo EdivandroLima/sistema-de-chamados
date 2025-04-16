@@ -1,0 +1,82 @@
+name: Deploy Laravel Project
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out the repository
+      uses: actions/checkout@v2
+
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Copy files via SSH
+      run: |
+        rsync -avz --delete \
+          -e "ssh -o StrictHostKeyChecking=no" \
+          ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/admin/web/sc.edidev.shop/public_html
+
+    - name: Install Composer dependencies
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+        cd /home/admin/web/sc.edidev.shop/public_html
+        composer install --no-interaction --prefer-dist --optimize-autoloader
+        EOF
+
+    - name: Copy Env, Key Generate, Storage Link
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+        cd /home/admin/web/sc.edidev.shop/public_html
+
+        # Se o .env já existe
+        if [ ! -f .env ]; then
+          sudo cp .env.example .env
+          php artisan key:generate
+        fi
+
+        php artisan storage:link
+        EOF
+
+    - name: Run Migrations
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+        cd /home/admin/web/sc.edidev.shop/public_html
+
+        # Configura SQLite no .env
+        sed -i 's/^DB_CONNECTION=.*/DB_CONNECTION=sqlite/' .env
+        echo "DB_DATABASE=/home/admin/web/sc.edidev.shop/public_html/database/database.sqlite" >> .env
+
+        # Cria o arquivo do banco SQLite se não existir
+        if [ ! -f database/database.sqlite ]; then
+          touch database/database.sqlite
+        fi
+
+        # Roda as migrations com seed
+        php artisan migrate:fresh --seed --force
+        EOF
+
+    - name: Set Permissions
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+        sudo chown -R www-data:www-data /home/admin/web/sc.edidev.shop/public_html
+        sudo chmod -R 775 /home/admin/web/sc.edidev.shop/public_html/storage
+        sudo chmod -R 775 /home/admin/web/sc.edidev.shop/public_html/bootstrap/cache
+        sudo chmod -R 777 /home/admin/web/sc.edidev.shop/public_html/*
+        EOF
+
+    - name: Run Optimize Clear and Cached
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+        cd /home/admin/web/sc.edidev.shop/public_html
+        php artisan optimize:clear
+        php artisan route:cache
+        php artisan view:cache
+        EOF
