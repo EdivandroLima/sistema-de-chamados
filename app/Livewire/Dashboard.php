@@ -21,7 +21,8 @@ class Dashboard extends Component
         if ($this->search)
             $tickets->where('subject', 'like', "%{$this->search}%")->orWhere('id', $this->search);
 
-        $tickets = $tickets->paginate(10);
+        $tickets = $tickets->latest()->paginate(10);
         return view('pages.dashboard', compact('tickets'));
     }
+    
 }

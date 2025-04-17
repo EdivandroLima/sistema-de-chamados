@@ -1,5 +1,8 @@
 <div class="py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-gray-600">
+
+        <x-alert-success />
+        
         <div class="flex items-center justify-between gap-3">
             <div class="">
                 <h2 class="text-2xl">Suas solicitações de suporte</h2>
@@ -23,7 +26,7 @@
                 <div class="flex">
                     <!-- Status -->
                     <label for="states" class="sr-only">Status</label>
-                    <select wire:model="status"
+                    <select wire:model.defer="status"
                         class=" py-5 px-5 border-0 focus:ring-0 text-gray-900 text-sm   dark:border-s-gray-700   block w-[200px] dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 "
                         type="button">
                         <option  value="" selected disabled>Status</option>
@@ -44,7 +47,7 @@
                                     stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                             </svg>
                         </div>
-                        <input type="search" id="search-dropdown" wire:model="search"
+                        <input type="search" id="search-dropdown" wire:model.defer="search"
                             class="block ps-10 py-5 px-5 w-full z-20 text-sm text-gray-900  border-0  focus:ring-0 focus:border-indigo-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
                             placeholder="Pesquisar por assunto ou ID" required />
                         <div class="absolute top-0 end-0 flex h-full py-2.5 pe-3">

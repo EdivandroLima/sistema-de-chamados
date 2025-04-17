@@ -19,22 +19,22 @@
                     <form wire:submit.prevent="store">
                         <!-- Assunto -->
                         <div class="space-y-1 mb-4">
-                            <label for="assunto" class="block text-sm font-medium text-gray-700">Assunto</label>
-                            <input type="text" id="assunto" wire:model.defer="assunto"
-                                class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
-                            @error('assunto')
-                                <span class="text-sm text-red-500">{{ $message }}</span>
+                            <label for="subject" class="block text-sm font-medium text-gray-700">Assunto</label>
+                            <input type="text" id="subject" wire:model.defer="subject"
+                                class="w-full p-3 border border-gray-300 @error('subject') border-red-500 @enderror rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+                            @error('subject')
+                                <span class="text-sm text-red-500 font-medium">{{ $message }}</span>
                             @enderror
                         </div>
 
                         <!-- Descrição -->
                         <div class="space-y-1">
-                            <label for="descricao" class="block text-sm font-medium text-gray-700">Descrição</label>
-                            <textarea id="descricao" rows="5" wire:model.defer="descricao"
-                                class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm resize-none"
+                            <label for="description" class="block text-sm font-medium text-gray-700">Descrição</label>
+                            <textarea id="description" rows="5" wire:model.defer="description"
+                                class="mb-0 w-full p-3 border border-gray-300 @error('description') border-red-500 @enderror rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm resize-none"
                                 placeholder="Explique o problema com detalhes..."></textarea>
-                            @error('descricao')
-                                <span class="text-sm text-red-500">{{ $message }}</span>
+                            @error('description')
+                                <span class="text-sm text-red-500 font-medium">{{ $message }}</span>
                             @enderror
                         </div>
 
