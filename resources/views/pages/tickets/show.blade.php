@@ -1,35 +1,51 @@
 <div class="py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-gray-600">
 
+
+        <x-alert-success />
+
         <!-- Filtro -->
         <div class="bg-white overflow-hidden shadow-sm sm:rounded mt-4">
             <div class="p-3">
 
 
                 <div class="p-5 space-y-6">
-                    <!-- Header -->
                     <div>
-                        <h2 class="text-2xl font-bold text-gray-800">Ticket #2343</h2>
-                        <p class="text-sm text-gray-500">Última atualização: 21/02/2017</p>
+                        <h2 class="text-2xl font-bold text-gray-800">Ticket #{{ $ticket->id }}</h2>
+                        <p class="text-sm text-gray-500">Última atualização: 21/02/2017 - respostsss</p>
                     </div>
 
-                    <!-- Informações do ticket -->
+                    <!-- Ticket -->
                     <div class="space-y-2">
                         <p class="text-gray-700">
-                            <span class="font-semibold">Assunto:</span> Balance error
+                            <span class="font-semibold">Cliente:</span>
+                            {{ $ticket->user->name }}
                         </p>
                         <p class="text-gray-700">
-                            <span class="font-semibold">Descrição:</span> O valor do meu saldo está incorreto após
-                            realizar uma transferência.
+                            <span class="font-semibold">Assunto:</span>
+                            {{ $ticket->subject }}
+                        </p>
+                        <p class="text-gray-700">
+                            <span class="font-semibold">Descrição:</span>
+                            {{ $ticket->description }}
                         </p>
                         <p class="text-gray-700">
                             <span class="font-semibold">Status:</span>
-                            <span
-                                class="inline-block bg-emerald-100 text-emerald-600 text-xs font-semibold px-3 py-1 rounded-full">Aberto</span>
+                            @if ($ticket->status == 'open')
+                                <span
+                                    class="inline-block bg-gray-200 text-gray-600 text-xs font-semibold px-3 py-1 rounded-full">
+                                    Pendente
+                                </span>
+                            @else
+                                <span
+                                    class="inline-block bg-emerald-100 text-emerald-600 text-xs font-semibold px-3 py-1 rounded-full">
+                                    Resolvido
+                                </span>
+                            @endif
                         </p>
                     </div>
 
-                    <!-- Comentários anteriores -->
+                    <!-- Respostas -->
                     <div>
                         <h3 class="text-md  text-gray-800 mb-2 flex gap-1 items-center ">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
@@ -58,81 +74,78 @@
                         </div>
                     </div>
 
-                    <!-- Campo para nova resposta -->
                     <div>
-                        <label for="resposta" class="block text-sm font-medium text-gray-700 mb-1">Responder
-                            ticket:</label>
+                        <label for="resposta" class="block text-sm font-medium text-gray-700 mb-1">
+                            Responder ticket:
+                        </label>
                         <textarea id="resposta" rows="4"
-                            class="w-full p-3 border border-gray-400 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 resize-none text-sm text-gray-700"
-                            placeholder="Digite sua resposta..."></textarea>
+                            class="w-full p-3 border border-gray-400 @if ($ticket->status == 'resolved') bg-gray-100 @endif rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 resize-none text-sm text-gray-700"
+                            placeholder="Digite sua resposta..." @if ($ticket->status == 'resolved') disabled @endif></textarea>
                         <div class="text-start mt-2">
                             <button
-                                class="bg-indigo-500 hover:bg-indigo-600 text-white px-5 py-2 rounded-md text-sm transition font-medium">Enviar
-                                resposta</button>
+                                class="@if ($ticket->status == 'resolved') bg-gray-400 @else bg-indigo-500 hover:bg-indigo-600 @endif   text-white px-5 py-2 rounded-md text-sm transition font-medium @if ($ticket->status == 'resolved') bg-gray-200 @endif"
+                                @if ($ticket->status == 'resolved') disabled @endif>
+                                Enviar resposta
+                            </button>
                         </div>
                     </div>
 
-                    <!-- Botões de ação -->
+                    <!-- Ações -->
                     <div class="flex flex-wrap justify-end gap-3 pt-2 border-t pt-4">
-                        <button
-                            class="bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-medium px-4 py-2 rounded transition">
-                            Marcar como Resolvido
-                        </button>
-                        <button
-                            class="bg-yellow-400 hover:bg-yellow-500 text-white text-sm font-medium px-4 py-2 rounded transition">
-                            Reabrir
-                        </button>
-                        <button
+                        <a href="{{ route('dashboard') }}"
+                            class="bg-gray-200 hover:bg-gray-300 text-black text-sm font-medium px-4 py-2 rounded transition">
+                            Voltar
+                        </a>
+                        @if ($ticket->status == 'resolved')
+                            <button wire:click="setOpen()"
+                                class="bg-yellow-400 hover:bg-yellow-500 text-black text-sm font-medium px-4 py-2 rounded transition">
+                                Reabrir
+                            </button>
+                        @else
+                            <button wire:click="setResolved()"
+                                class="bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-medium px-4 py-2 rounded transition">
+                                Marcar como Resolvido
+                            </button>
+                        @endif
+
+                        <button onclick="document.getElementById('btn-delete').click()"
                             class="bg-rose-500 hover:bg-rose-600 text-white text-sm font-medium px-4 py-2 rounded transition">
                             Deletar Ticket
                         </button>
                     </div>
                 </div>
-
-
-
-                <!-- Alpine.js (caso ainda não tenha no projeto) -->
-                <script src="https://unpkg.com/alpinejs" defer></script>
-
-                <!-- Componente -->
-                <div x-data="{ showModal: false }">
-
-                    <!-- Botão que abre o modal -->
-                    <button @click="showModal = true"
-                        class="bg-rose-500 hover:bg-rose-600 text-white text-sm font-medium px-4 py-2 rounded transition">
-                        Deletar Ticket
-                    </button>
-
-                    <!-- Modal de confirmação -->
-                    <div x-show="showModal" x-cloak
-                        class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                        <div @click.away="showModal = false"
-                            class="bg-white w-full max-w-md rounded-xl p-6 shadow-lg space-y-4">
-                            <h2 class="text-xl font-semibold text-gray-800">Tem certeza?</h2>
-                            <p class="text-sm text-gray-600">
-                                Essa ação irá deletar o ticket permanentemente. Deseja continuar?
-                            </p>
-
-                            <div class="flex justify-end gap-3 pt-2">
-                                <button @click="showModal = false"
-                                    class="px-4 py-2 text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-md">
-                                    Cancelar
-                                </button>
-
-                                <button @click="showModal = false; $wire.call('deleteTicket')"
-                                    class="px-4 py-2 text-sm bg-rose-600 hover:bg-rose-700 text-white rounded-md">
-                                    Deletar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-
-
             </div>
         </div>
-
     </div>
+
+    <!-- Model Deletar -->
+    <div x-data="{ showModal: false }">
+        <button id="btn-delete" @click="showModal = true" class="hidden">
+            Deletar Ticket
+        </button>
+        <!-- Modal de confirmação -->
+        <div x-show="showModal" x-cloak
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+            <div @click.away="showModal = false" class="bg-white w-full max-w-md rounded-xl p-6 shadow-lg space-y-4">
+                <h2 class="text-xl font-semibold text-gray-800">Tem certeza?</h2>
+                <p class="text-sm text-gray-600">
+                    Essa ação irá deletar o ticket permanentemente. Deseja continuar?
+                </p>
+
+                <div class="flex justify-end gap-3 pt-2">
+                    <button @click="showModal = false"
+                        class="px-4 py-2 text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-md">
+                        Cancelar
+                    </button>
+
+                    <button @click="showModal = false; $wire.call('deleteTicket')"
+                        class="px-4 py-2 text-sm bg-rose-600 hover:bg-rose-700 text-white rounded-md">
+                        Deletar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/ Model Deletar -->
+
 </div>

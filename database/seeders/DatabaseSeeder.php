@@ -17,5 +17,8 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::factory()->create([
             'email' => 'adm@email.com',
         ]);
+        \App\Models\Ticket::factory(50)->create([
+            'user_id' => 1
+        ]);
     }
 }
