@@ -60,17 +60,29 @@
                             </svg>
                             Respostas
                         </h3>
-                        <div class="space-y-3 max-h-48 overflow-y-auto pr-1">
-                            <div class="bg-gray-100 p-3 rounded-lg text-sm text-gray-700">
-                                <p><span class="font-semibold">Você:</span> Verifiquei que o erro de saldo foi causado
-                                    por uma duplicação de transação.</p>
-                                <span class="text-xs text-gray-500 block mt-1">21/02/2017 09:33</span>
-                            </div>
-                            <div class="bg-gray-100 p-3 rounded-lg text-sm text-gray-700">
-                                <p><span class="font-semibold">Usuário:</span> Meu saldo está R$ 100,00 menor do que
-                                    deveria estar.</p>
-                                <span class="text-xs text-gray-500 block mt-1">20/02/2017 22:10</span>
-                            </div>
+                        <div class="space-y-3 max-h-64 overflow-y-auto pr-1">
+                            @foreach ($ticket->ticket_replies()->latest()->get() as $reply)
+                                <div class="bg-gray-100 p-3 rounded-lg text-sm text-gray-700">
+                                    <p>
+                                        <span class="font-semibold">
+                                            @if ($reply->user_id == auth()->user()->id)
+                                                Você:
+                                            @else
+                                                {{ $reply->user->name }}
+                                            @endif
+                                        </span>
+                                        {{ $reply->message }}
+                                    </p>
+                                    <span
+                                        class="text-xs text-gray-500 block mt-1">{{ $reply->created_at->format('d/m/Y H:i') }}</span>
+                                </div>
+                            @endforeach
+                            @if ($ticket->ticket_replies()->count() == 0)
+                                <div class="p-3 bg-yellow-100 text-sm border border-yellow-300 rounded text-yellow-900">
+                                    Aguardando resposta.
+                                </div>
+                            @endif
+
                         </div>
                     </div>
 
@@ -78,11 +90,14 @@
                         <label for="resposta" class="block text-sm font-medium text-gray-700 mb-1">
                             Responder ticket:
                         </label>
-                        <textarea id="resposta" rows="4"
-                            class="w-full p-3 border border-gray-400 @if ($ticket->status == 'resolved') bg-gray-100 @endif rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 resize-none text-sm text-gray-700"
+                        <textarea id="resposta" rows="4" wire:model.defer="replyMessage"
+                            class="w-full p-3 border border-gray-400 @error('replyMessage') border-red-500 @enderror @if ($ticket->status == 'resolved') bg-gray-100 @endif rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 resize-none text-sm text-gray-700"
                             placeholder="Digite sua resposta..." @if ($ticket->status == 'resolved') disabled @endif></textarea>
+                        @error('replyMessage')
+                            <div class="text-red-500 font-medium text-xs mb-3">{{ $message }}</div>
+                        @enderror
                         <div class="text-start mt-2">
-                            <button
+                            <button wire:click="setReplyMessage"
                                 class="@if ($ticket->status == 'resolved') bg-gray-400 @else bg-indigo-500 hover:bg-indigo-600 @endif   text-white px-5 py-2 rounded-md text-sm transition font-medium @if ($ticket->status == 'resolved') bg-gray-200 @endif"
                                 @if ($ticket->status == 'resolved') disabled @endif>
                                 Enviar resposta
@@ -138,7 +153,7 @@
                         Cancelar
                     </button>
 
-                    <button @click="showModal = false; $wire.call('deleteTicket')"
+                    <button @click="showModal = false; $wire.call('destroy')"
                         class="px-4 py-2 text-sm bg-rose-600 hover:bg-rose-700 text-white rounded-md">
                         Deletar
                     </button>
