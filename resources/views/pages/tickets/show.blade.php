@@ -4,15 +4,15 @@
 
         <x-alert-success />
 
-        <!-- Filtro -->
-        <div class="bg-white overflow-hidden shadow-sm sm:rounded mt-4">
+        <!--  -->
+        <div wire:poll.3000ms class="bg-white overflow-hidden shadow-sm sm:rounded mt-4">
             <div class="p-3">
 
 
                 <div class="p-5 space-y-6">
                     <div>
                         <h2 class="text-2xl font-bold text-gray-800">Ticket #{{ $ticket->id }}</h2>
-                        <p class="text-sm text-gray-500">Última atualização: 21/02/2017 - respostsss</p>
+                        <p class="text-sm text-gray-500">Última atualização: {{$ticket->updated_at->format('d/m/Y')}}</p>
                     </div>
 
                     <!-- Ticket -->

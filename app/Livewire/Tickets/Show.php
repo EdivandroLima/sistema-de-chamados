@@ -18,6 +18,14 @@ class Show extends Component
     public function render()
     {
         $this->validAcess();
+
+        // Atualizar visualização de respostas
+        $this->ticket
+            ->ticket_replies()
+            ->where('user_id', '!=', auth()->user()->id)
+            ->where('is_read', 0)
+            ->update(['is_read' => true]);
+
         return view('pages.tickets.show');
     }
 
@@ -36,6 +44,9 @@ class Show extends Component
             'message' => $this->replyMessage,
         ]);
 
+        // atualiza updated_at
+        $this->ticket->touch();
+        // Limpa campo de resposta
         $this->replyMessage = '';
 
         session()->flash('success', 'Resposta adicionada com sucesso.');
@@ -59,7 +70,7 @@ class Show extends Component
 
     public function validAcess()
     {
-        if (auth()->user()->id != $this->ticket->user_id || 'se for admin' == false)
+        if (auth()->user()->id != $this->ticket->user_id && 'not adm' == false)
             abort(403);
     }
 
