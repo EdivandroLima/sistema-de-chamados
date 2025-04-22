@@ -21,7 +21,7 @@ class TicketFactory extends Factory
             'subject' => fake()->sentence(4),
             'description' => fake()->sentence(50),
             'status' => fake()->randomElement(['open', 'resolved']),
-            'user_id' => rand(2, User::count())
+            'user_id' => fake()->randomElement(User::where('id', '!=', 1)->pluck('id'))
         ];
     }
 }

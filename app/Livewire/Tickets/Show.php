@@ -70,7 +70,8 @@ class Show extends Component
 
     public function validAcess()
     {
-        if (auth()->user()->id != $this->ticket->user_id && 'not adm' == false)
+        /** @disregard */
+        if (auth()->user()->id != $this->ticket->user_id && !auth()->user()->hasRole('admin'))
             abort(403);
     }
 

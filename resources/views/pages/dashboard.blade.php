@@ -7,18 +7,20 @@
             <div class="">
                 <h2 class="text-2xl">Suas solicitações de suporte</h2>
             </div>
-            <div class="">
-                <a href="{{ route('tickets.create') }}" class="font-bold flex gap-1  text-indigo-500 text-sm uppercase">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M12 5l0 14" />
-                        <path d="M5 12l14 0" />
-                    </svg>
-                    Nova solicitação de suporte
-                </a>
-            </div>
+            @role('customer')
+                <div class="">
+                    <a href="{{ route('tickets.create') }}" class="font-bold flex gap-1  text-indigo-500 text-sm uppercase">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M12 5l0 14" />
+                            <path d="M5 12l14 0" />
+                        </svg>
+                        Nova solicitação de suporte
+                    </a>
+                </div>
+            @endrole
         </div>
         <!-- Filtro -->
         <div class="bg-white overflow-hidden shadow-sm sm:rounded mt-4">
@@ -115,7 +117,7 @@
                                                     </span>
                                                 @endif
                                             </td>
-                                            <td class="py-3 px-4">{{$ticket->updated_at->format('d-m-Y')}}</td>
+                                            <td class="py-3 px-4">{{ $ticket->updated_at->format('d-m-Y') }}</td>
                                             <td class="py-3 px-4 text-right relative">
                                                 <div class="flex items-center gap-2 justify-end">
                                                     @php

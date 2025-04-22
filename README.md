@@ -14,3 +14,8 @@ php artisan livewire:publish --config
 ```
 https://github.com/lucascudo/laravel-pt-BR-localization
 ```
+
+### Laravel Permission - Spatie
+```
+https://spatie.be/docs/laravel-permission/v6/installation-laravel
+```
