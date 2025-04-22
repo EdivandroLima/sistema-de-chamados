@@ -12,7 +12,6 @@
         <div class="bg-white overflow-hidden shadow-sm sm:rounded mt-4">
             <form class="">
                 <div class="flex">
-
                     <!-- Pesquisa -->
                     <div class="relative w-full">
                         <div class="absolute inset-y-0 start-0 flex items-center ps-5 pointer-events-none">
@@ -35,12 +34,8 @@
                 </div>
             </form>
         </div>
-
         <!-- Tickets -->
         <div class="overflow-hidden  mt-10">
-
-
-            {{-- ============ --}}
             <div class="">
                 <div class="">
                     @if ($customers->total() == 0)
@@ -103,10 +98,6 @@
                     @endif
                 </div>
             </div>
-
-            {{-- ============ --}}
-
-
         </div>
     </div>
 
@@ -123,13 +114,11 @@
                 <p class="text-sm text-gray-600">
                     Essa ação irá deletar o cliente permanentemente. Deseja continuar?
                 </p>
-
                 <div class="flex justify-end gap-3 pt-2">
                     <button @click="showModal = false"
                         class="px-4 py-2 text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-md">
                         Cancelar
                     </button>
-
                     <button @click="showModal = false; $wire.call('destroy')"
                         class="px-4 py-2 text-sm bg-rose-600 hover:bg-rose-700 text-white rounded-md">
                         Deletar
@@ -139,5 +128,4 @@
         </div>
     </div>
     <!--/ Model Deletar -->
-
 </div>
