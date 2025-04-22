@@ -94,6 +94,9 @@
                                 <thead class="text-gray-500 border-b">
                                     <tr>
                                         <th class="py-2 px-4">TICKET #</th>
+                                        @role('admin')
+                                            <th class="py-2 px-4">CLIENTE</th>
+                                        @endrole
                                         <th class="py-2 px-4">ASSUNTO</th>
                                         <th class="py-2 px-4">STATUS DA SOLICITAÇÃO</th>
                                         <th class="py-2 px-4">ÚLTIMA ATUALIZAÇÃO</th>
@@ -104,6 +107,11 @@
                                     @foreach ($tickets as $ticket)
                                         <tr class=" border-b-8 border-gray-100 shadow bg-white hover:bg-gray-50">
                                             <td class="py-3 px-4 font-medium">#{{ $ticket->id }}</td>
+                                            @role('admin')
+                                                <td class="py-3 px-4">
+                                                    {{ $ticket->user->name }}
+                                                </td>
+                                            @endrole
                                             <td class="py-3 px-4">{{ Str::limit($ticket->subject, 100) }}</td>
                                             <td class="py-3 px-4">
                                                 @if ($ticket->status == 'open')

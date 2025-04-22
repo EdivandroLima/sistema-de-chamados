@@ -20,6 +20,8 @@ class UserSeeder extends Seeder
             'email' => 'user@email.com',
         ])->assignRole(['customer']);
         
-        \App\Models\User::factory()->create()->assignRole(['customer']);
+        for ($i=0; $i < 100; $i++) { 
+            \App\Models\User::factory()->create()->assignRole(['customer']);
+        }
     }
 }

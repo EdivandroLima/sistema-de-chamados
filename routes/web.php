@@ -28,9 +28,11 @@ Route::middleware([
 ])->group(function () {
 
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
-    // Tickets
-    Route::get('/create', TicketCreate::class)->name('tickets.create');
-    Route::get('/show/{ticket}', TicketShow::class)->name('tickets.show');
-    // Clientes
-    Route::get('/customers', CustomersAll::class)->name('customers.index');
+    Route::prefix('customers')->middleware('role:admin')->group(function () {
+        Route::get('/', CustomersAll::class)->name('customers.index');
+    });
+    Route::prefix('tickets')->group(function () {
+        Route::get('/create', TicketCreate::class)->name('tickets.create');
+        Route::get('/show/{ticket}', TicketShow::class)->name('tickets.show');
+    });
 });
