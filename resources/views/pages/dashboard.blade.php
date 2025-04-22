@@ -36,10 +36,7 @@
                         <option value="resolved">Resolvido</option>
                         <option value="all">Todos</option>
                     </select>
-
-                    <div class="border border-2 border-s-gray-100 mx-3 my-2 border-e-0">
-                    </div>
-
+                    <div class="border border-2 border-s-gray-100 mx-3 my-2 border-e-0"></div>
                     <!-- Pesquisa -->
                     <div class="relative w-full">
                         <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -65,11 +62,8 @@
 
         <!-- Tickets -->
         <div class="overflow-hidden  mt-10">
-
-
             <div class="" wire:poll.3000ms>
                 <div class="">
-
                     @if ($tickets->total() == 0)
                         <div id="alert-additional-content-4"
                             class="p-4 mb-4 text-yellow-800 border border-yellow-300 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 dark:border-yellow-800"
@@ -94,6 +88,9 @@
                                 <thead class="text-gray-500 border-b">
                                     <tr>
                                         <th class="py-2 px-4">TICKET #</th>
+                                        @role('admin')
+                                            <th class="py-2 px-4">CLIENTE</th>
+                                        @endrole
                                         <th class="py-2 px-4">ASSUNTO</th>
                                         <th class="py-2 px-4">STATUS DA SOLICITAÇÃO</th>
                                         <th class="py-2 px-4">ÚLTIMA ATUALIZAÇÃO</th>
@@ -104,6 +101,11 @@
                                     @foreach ($tickets as $ticket)
                                         <tr class=" border-b-8 border-gray-100 shadow bg-white hover:bg-gray-50">
                                             <td class="py-3 px-4 font-medium">#{{ $ticket->id }}</td>
+                                            @role('admin')
+                                                <td class="py-3 px-4">
+                                                    {{ $ticket->user->name }}
+                                                </td>
+                                            @endrole
                                             <td class="py-3 px-4">{{ Str::limit($ticket->subject, 100) }}</td>
                                             <td class="py-3 px-4">
                                                 @if ($ticket->status == 'open')
@@ -138,15 +140,11 @@
                                                     </a>
                                                 </div>
                                             </td>
-
-
-
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
                         </div>
-
                         <div class="mt-4">
                             <style>
                                 span.relative.inline-flex.items-center.px-4.py-2.-ml-px.text-sm.font-medium.text-gray-500.bg-white.border.border-gray-300.cursor-default.leading-5.dark\:bg-gray-800.dark\:border-gray-600 {
@@ -158,10 +156,8 @@
                             {{ $tickets->links() }}
                         </div>
                     @endif
-
                 </div>
             </div>
-
         </div>
     </div>
 </div>

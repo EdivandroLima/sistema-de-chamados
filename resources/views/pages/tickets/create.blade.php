@@ -4,18 +4,13 @@
         <!-- Filtro -->
         <div class="bg-white overflow-hidden shadow-sm sm:rounded mt-4">
             <div class="p-3">
-
-
                 <div class=" p-5 pt-4 space-y-6">
                     <h2 class="text-2xl font-bold text-gray-800">Nova solicitação de suporte</h2>
-
-                    <!-- Mensagem de sucesso/erro (exemplo) -->
                     @if (session()->has('message'))
                         <div class="p-3 bg-green-100 text-green-700 text-sm rounded-md">
                             {{ session('message') }}
                         </div>
                     @endif
-
                     <form wire:submit.prevent="store">
                         <!-- Assunto -->
                         <div class="space-y-1 mb-4">
@@ -26,7 +21,6 @@
                                 <span class="text-sm text-red-500 font-medium">{{ $message }}</span>
                             @enderror
                         </div>
-
                         <!-- Descrição -->
                         <div class="space-y-1">
                             <label for="description" class="block text-sm font-medium text-gray-700">Descrição</label>
@@ -37,7 +31,6 @@
                                 <span class="text-sm text-red-500 font-medium">{{ $message }}</span>
                             @enderror
                         </div>
-
                         <!-- Botão de envio -->
                         <div class="pt-4">
                             <button type="submit"
@@ -47,11 +40,7 @@
                         </div>
                     </form>
                 </div>
-
-
-
             </div>
         </div>
-
     </div>
 </div>
